@@ -11,7 +11,7 @@ const app = express.Router()
 
 
 app.post('/new/event', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
 
     const data = req.body.map(async (e) => {
         if (e._id) {
@@ -28,23 +28,23 @@ app.post('/new/event', (req, res) => {
 
 app.post('/delete/event/:id', async (req, res) => {
     const { id } = req.params
-    console.log('id',id)
+    // console.log('id',id)
     const data = await Events_Model.deleteOne({ _id: id })
-    console.log('deleted',data)
+    // console.log('deleted',data)
     res.json(data)
 })
 
 app.get('/events', async (req, res) => {
 
     const data = await Events_Model.find()
-    console.log('data',data)
+    // console.log('data',data)
 
     res.json(data)
 })
 
 app.post('/countryandcity', async (req, res) => {
     let { city, country, _id } = req.body
-    console.log(city,country,_id)
+    // console.log(city,country,_id)
     let data;
     if (!_id) {
         data=await country_city_Model.updateOne({ country: country }, { country: country,city:city }, { upsert: true })
@@ -59,7 +59,7 @@ app.post('/countryandcity', async (req, res) => {
 
 app.get('/countryandcity', async (req, res) => {
     let data = await country_city_Model.findOne()
-    console.log(data)
+    // console.log(data)
     res.json(data)
 })
 

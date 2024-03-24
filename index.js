@@ -17,12 +17,15 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: 'http://localhost:4080/auth/google/redirect'
+    callbackURL: '/auth/google/redirect'
 }
 
-server.use(cors())
+server.use(cors({
+    origin: `${process.env.Front_End}`,
+    credentials:true
+}))
 server.use(express.json())
-server.use(express.static('public'))
+// server.use(express.static('public'))
 
 
 server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
@@ -38,12 +41,12 @@ passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, pro
 
 
 passport.serializeUser((user, done) => {
-    console.log('Serializing')
+    // console.log('Serializing')
     done(null, { email:user.profile._json.email ,accesstoken:user.accesstoken})
 })
 
 passport.deserializeUser((user, done) => {
-    console.log('Deserializing')
+    // console.log('Deserializing')
     done(null, user)
 })
 
@@ -51,9 +54,42 @@ server.use(passport.initialize()) // to set the cookies session data to go by de
 
 server.use(passport.session()) 
 
+server.post('/upload/to/google-calendar', (req, res) => {
+    
+    const {data_to_upload}=req.body
+    let promise_container = []
+    for (let j of data_to_upload) {
 
+        const waiting=fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+            method: 'POST', body: JSON.stringify({
+                'summary': `${j.title}`,
+                'description': `${j.description ? j.description : 'No Description'} , the address is ${j.address} , follow the link for time and price info ${j.link} `,
+                'start': {
+                    'dateTime': `${j.start}`,
+                    'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                },
+                'end': {
+                    'dateTime': `${j.end}`,
+                    'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                }
+            }), headers: { 'Authorization': `Bearer ya29.a0Ad52N39F86RyLNS0nWC-Kk0102ePIP6rZNfZwULvpiWjK6LzhV93-kmcCRY_u6fdgbckt4Dr7NVZX6srBEOU1075WhEzZBQF9UMNH6utj_OcNfZz2Z44uL1ZXNVeKinu4wK0lJHON8uVO_NIJ21bB6L6vqMVrbtONW0aCgYKAVYSARISFQHGX2MijBAWadktkzSD2F6lbE0PKA0170` }
+        })
 
-server.get('/user',(req, res) => {
+       
+
+        promise_container.push(waiting)
+
+    }
+
+    Promise.all(promise_container).then(() => {
+        res.json('done')
+    })
+
+    
+})
+
+server.get('/user', (req, res) => {
+    console.log(req.user)
     res.json(req.user)
 })
 
@@ -64,37 +100,23 @@ server.get('/logout', (req, res) => {
 server.use('/api', app)
 
 
-// server.get("/", (req, res) => {
-//     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
-
-// });
 
 server.get('/auth/google/redirect', passport.authenticate('google', {
-    failureRedirect: '/login',
-    successRedirect: '/',
+    failureRedirect: `${process.env.Front_End}/login`,
+    successRedirect: `${process.env.Front_End}`,
 }))
 
 
 
+server.get('/google-signin', passport.authenticate('google', { scope: ['email', 'https://www.googleapis.com/auth/calendar'] }))
 
-
-server.get('/logout', (req, res) => {
-    req.logOut()
-    res.send('<p>Logout Page</p>')
-})
-
-server.get('/google-signin', passport.authenticate('google', { scope: ['email'] }))
-
-server.get("/*", (req, res) => {
-    // console.log(__dirname)
-    console.log(path.join(__dirname, 'public', 'index.html'))
-    res.sendFile(path.join(__dirname,'public', 'index.html'))
+server.get("/", (req, res) => {
+    // // console.log(__dirname)
+    // console.log(path.join(__dirname, 'public', 'index.html'))
+    // res.sendFile(path.join(__dirname,'public', 'index.html'))
+    res.send('<p>Events Server</p>')
 
 });
-
-
-
-
 
 
 mongoose.connection.on('connected', () => {
