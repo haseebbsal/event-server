@@ -11,7 +11,11 @@ const event_schema = new mongo.Schema({
         required: true,
         unique: true
     },
-
+    id: {
+        type: String,
+        required:true
+        
+    }
 })
 
 const country_city_model = mongo.model('country_city', event_schema)

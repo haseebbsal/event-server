@@ -20,7 +20,7 @@ const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
     callbackURL: '/auth/google/redirect',
-    proxy:true
+    // proxy:true
 }
 
 server.use(cors({
@@ -31,15 +31,7 @@ server.use(express.json())
 // server.use(express.static('public'))
 
 
-// server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
-//     name: 'Events_Session',
-//     maxAge: 60000 * 60 * 24,
-//     keys: ['haseebkey', 'sabihkey'],
-//     secure: 'auto',
-//     sameSite: "none",
-//     proxy:true// will have to store these keys in .env later
 
-// }))
 
 
 server.use(session(
@@ -48,26 +40,27 @@ server.use(session(
         secret: 'yessss',
         resave: false,
         saveUninitialized: false,
-        proxy:true,
+        // proxy:true,
         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
         cookie: {
             maxAge: 60000 * 60 * 24,
             // sameSite: 'strict',
-            sameSite:'none',
-            secure: "auto"
+            // sameSite:'none',
+            // secure: "auto"
 
         }
 
     }
 ))
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
+    // console.log(profile)
     done(null, { profile ,accesstoken})
 }))
 
 
 passport.serializeUser((user, done) => {
     // console.log('Serializing')
-    done(null, { email:user.profile._json.email ,accesstoken:user.accesstoken})
+    done(null, { email:user.profile._json.email ,accesstoken:user.accesstoken,id:user.profile.id})
 })
 
 passport.deserializeUser((user, done) => {
@@ -97,7 +90,7 @@ server.post('/upload/to/google-calendar', (req, res) => {
                     'dateTime': `${j.end}`,
                     'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
                 }
-            }), headers: { 'Authorization': `Bearer ya29.a0Ad52N39F86RyLNS0nWC-Kk0102ePIP6rZNfZwULvpiWjK6LzhV93-kmcCRY_u6fdgbckt4Dr7NVZX6srBEOU1075WhEzZBQF9UMNH6utj_OcNfZz2Z44uL1ZXNVeKinu4wK0lJHON8uVO_NIJ21bB6L6vqMVrbtONW0aCgYKAVYSARISFQHGX2MijBAWadktkzSD2F6lbE0PKA0170` }
+            }), headers: { 'Authorization': `Bearer ${req.user.accesstoken}` }
         })
 
        

@@ -5,6 +5,11 @@ const event_schema = new mongo.Schema({
         type: String,
         required: true,
         unique:true
+    },
+    id: {
+        type: String,
+        required: true
+
     }
 })
 
