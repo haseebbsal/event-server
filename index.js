@@ -127,7 +127,7 @@ server.use('/api', app)
 
 server.get('/auth/google/redirect', passport.authenticate('google', {
     failureRedirect: `${process.env.Front_End}/login`,
-    successRedirect: `${process.env.Front_End}`,
+    successRedirect: `/`,
 }))
 
 
