@@ -9,7 +9,8 @@ let passport = require('passport')
 let google = require('passport-google-oauth20')
 let session = require('express-session')
 let mongostore = require('connect-mongo')
-const path=require('path')
+const path = require('path')
+const helmet=require('helmet')
 
 const Server_Port = process.env.PORT
 const Mongo_url = process.env.DB_URL
@@ -19,14 +20,15 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: `${process.env.Backend}/auth/google/redirect`,
-    proxy:true
+    callbackURL: `/auth/google`,
+    // proxy:true
 }
 
 server.use(cors({
     origin: [`${process.env.Front_End}`,`${process.env.Backend}`],
     credentials: true
 }))
+server.use(helmet())
 server.use(express.json())
 
 server.use(session(
@@ -35,13 +37,13 @@ server.use(session(
         secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
         resave: false,
         saveUninitialized: false,
-        proxy:true,
+        // proxy:true,
         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
         cookie: {
             maxAge: 60000 * 60 * 24,
             // sameSite: 'strict',
-            sameSite:'none',
-            secure: "auto"
+            // sameSite:'none',
+            // secure: "auto"
 
         }
 
@@ -60,13 +62,14 @@ passport.deserializeUser((user, done) => {
     done(null, user)
 })
 
-// server.use(passport.initialize()) // to set the cookies session data to go by default to req.user
+server.use(passport.initialize()) // to set the cookies session data to go by default to req.user
 
 server.use(passport.session()) 
 
-server.get('/auth/google/redirect', passport.authenticate('google', {
+server.get('/auth/google', passport.authenticate('google', {
     failureRedirect: `${process.env.Front_End}/login`,
     successRedirect: `${process.env.Front_End}`,
+    // session:false
 }))
 
 
