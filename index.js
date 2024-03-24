@@ -20,7 +20,7 @@ const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
     callbackURL: '/auth/google/redirect',
-    // proxy:true
+    proxy:true
 }
 
 server.use(cors({
@@ -28,11 +28,6 @@ server.use(cors({
     credentials: true
 }))
 server.use(express.json())
-// server.use(express.static('public'))
-
-
-
-
 
 server.use(session(
     {
@@ -40,37 +35,54 @@ server.use(session(
         secret: 'yessss',
         resave: false,
         saveUninitialized: false,
-        // proxy:true,
+        proxy:true,
         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
         cookie: {
             maxAge: 60000 * 60 * 24,
             // sameSite: 'strict',
-            // sameSite:'none',
-            // secure: "auto"
+            sameSite:'none',
+            secure: "auto"
 
         }
 
     }
 ))
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
-    // console.log(profile)
     done(null, { profile ,accesstoken})
 }))
 
 
 passport.serializeUser((user, done) => {
-    // console.log('Serializing')
     done(null, { email:user.profile._json.email ,accesstoken:user.accesstoken,id:user.profile.id})
 })
 
 passport.deserializeUser((user, done) => {
-    // console.log('Deserializing')
     done(null, user)
 })
 
 server.use(passport.initialize()) // to set the cookies session data to go by default to req.user
 
 server.use(passport.session()) 
+
+server.get('/auth/google/redirect', passport.authenticate('google', {
+    failureRedirect: `${process.env.Front_End}/login`,
+    successRedirect: `${process.env.Front_End}`,
+}))
+
+
+
+server.get('/google-signin', passport.authenticate('google', { scope: ['email', 'https://www.googleapis.com/auth/calendar'] }))
+
+server.get("/", (req, res) => {
+    res.send('<p>Events Server</p>')
+});
+
+server.use((req, res) => {
+    if (req.user) {
+        next()
+    }
+    res.json({message:'UnAuthorized'}).status(400)
+})
 
 server.post('/upload/to/google-calendar', (req, res) => {
     
@@ -119,22 +131,8 @@ server.use('/api', app)
 
 
 
-server.get('/auth/google/redirect', passport.authenticate('google', {
-    failureRedirect: `${process.env.Front_End}/login`,
-    successRedirect: `${process.env.Front_End}`,
-}))
 
 
-
-server.get('/google-signin', passport.authenticate('google', { scope: ['email', 'https://www.googleapis.com/auth/calendar'] }))
-
-server.get("/", (req, res) => {
-    // // console.log(__dirname)
-    // console.log(path.join(__dirname, 'public', 'index.html'))
-    // res.sendFile(path.join(__dirname,'public', 'index.html'))
-    res.send('<p>Events Server</p>')
-
-});
 
 
 mongoose.connection.on('connected', () => {
