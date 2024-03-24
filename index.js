@@ -19,7 +19,7 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: '/auth/google/redirect',
+    callbackURL: `${process.env.Backend}/auth/google/redirect`,
     proxy:true
 }
 
@@ -60,7 +60,7 @@ passport.deserializeUser((user, done) => {
     done(null, user)
 })
 
-server.use(passport.initialize()) // to set the cookies session data to go by default to req.user
+// server.use(passport.initialize()) // to set the cookies session data to go by default to req.user
 
 server.use(passport.session()) 
 
@@ -78,6 +78,7 @@ server.get("/", (req, res) => {
 });
 
 server.get('/user', (req, res) => {
+    console.log('im here')
     console.log(req.user)
     res.json(req.user)
 })
