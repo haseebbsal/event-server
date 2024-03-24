@@ -33,8 +33,9 @@ server.use(cookieSession({ // used for identifying our cookies and setting up ou
     name: 'Events_Session',
     maxAge: 60000 * 60 * 24,
     keys: ['haseebkey', 'sabihkey'],
-    secure: true,
-    secureProxy:true// will have to store these keys in .env later
+    secure: 'auto',
+    sameSite: "none",
+    proxy:true// will have to store these keys in .env later
 
 }))
 
