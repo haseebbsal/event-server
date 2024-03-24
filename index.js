@@ -142,10 +142,7 @@ server.get('/logout', (req, res) => {
 server.use('/api', app)
 
 
-const httpsServer = https.createServer({
-    cert: fs.readFileSync('cert.pem'),
-    key: fs.readFileSync('key.pem')
-},server)
+const httpsServer = https.createServer(server)
 
 
 
