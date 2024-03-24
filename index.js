@@ -32,7 +32,9 @@ server.use(express.json())
 server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
     name: 'Events_Session',
     maxAge: 60000 * 60 * 24,
-    keys:['haseebkey','sabihkey'] // will have to store these keys in .env later
+    keys: ['haseebkey', 'sabihkey'],
+    secure: true,
+    secureProxy:true// will have to store these keys in .env later
 
 }))
 
