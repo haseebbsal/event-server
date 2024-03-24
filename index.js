@@ -78,7 +78,7 @@ server.get('/auth/google', passport.authenticate('google', {
 
 
 
-server.get('/google-signin', passport.authenticate('google', { scope: ['email'] }))
+server.get('/google-signin', passport.authenticate('google', { scope: ['email','https://www.googleapis.com/auth/calendar'] }))
 
 server.get("/", (req, res) => {
     res.send('<p>Events Server</p>')
