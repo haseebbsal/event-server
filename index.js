@@ -24,7 +24,7 @@ const google_options = {
 }
 
 server.use(cors({
-    origin: `${process.env.Front_End}`,
+    origin: [`${process.env.Front_End}`,`${process.env.Backend}`],
     credentials: true
 }))
 server.use(express.json())
@@ -71,7 +71,7 @@ server.get('/auth/google/redirect', passport.authenticate('google', {
 
 
 
-server.get('/google-signin', passport.authenticate('google', { scope: ['email', 'https://www.googleapis.com/auth/calendar'] }))
+server.get('/google-signin', passport.authenticate('google', { scope: ['email'] }))
 
 server.get("/", (req, res) => {
     res.send('<p>Events Server</p>')
@@ -128,7 +128,10 @@ server.post('/upload/to/google-calendar', (req, res) => {
 
 
 server.get('/logout', (req, res) => {
-    req.logout()
+    req.logout(function (err) {
+        if (err) { return  }
+        res.json('done')
+    });
     res.json('logged out')
 })
 server.use('/api', app)
