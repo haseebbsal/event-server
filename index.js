@@ -12,7 +12,8 @@ let mongostore = require('connect-mongo')
 const path = require('path')
 const helmet = require('helmet')
 const fs = require('fs')
-const https=require('https')
+const https = require('https')
+const http=require('http')
 
 const Server_Port = process.env.PORT
 const Mongo_url = process.env.DB_URL
@@ -142,7 +143,7 @@ server.get('/logout', (req, res) => {
 server.use('/api', app)
 
 
-const httpsServer = https.createServer(server)
+const httpsServer = http.createServer(server)
 
 
 
