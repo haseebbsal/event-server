@@ -41,7 +41,7 @@ server.use(express.json())
 // }))
 
 
-app.use(session(
+server.use(session(
     {
         name: 'google-session',
         secret: 'yessss',
