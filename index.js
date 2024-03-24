@@ -126,9 +126,9 @@ mongoose.connection.on('connected', () => {
 
 async function connect() {
     await mongoose.connect(Mongo_url)
-    server.listen(Server_Port, () => {
-        console.log(`server started on port ${Server_Port}`)
-    })
+    // server.listen(Server_Port, () => {
+    //     console.log(`server started on port ${Server_Port}`)
+    // })
 }
 
 connect()
