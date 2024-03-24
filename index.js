@@ -31,8 +31,8 @@ server.use(express.json())
 
 server.use(session(
     {
-        name: 'google-session',
-        secret: 'yessss',
+        name: 'events_session',
+        secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
         resave: false,
         saveUninitialized: false,
         proxy:true,
