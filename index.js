@@ -27,6 +27,7 @@ const google_options = {
     proxy:true
 }
 
+server.enable('trust proxy')
 server.use(cors({
     origin: [`${process.env.Front_End}`,`${process.env.Backend}`],
     credentials: true
