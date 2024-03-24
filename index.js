@@ -10,7 +10,9 @@ let google = require('passport-google-oauth20')
 let session = require('express-session')
 let mongostore = require('connect-mongo')
 const path = require('path')
-const helmet=require('helmet')
+const helmet = require('helmet')
+const fs = require('fs')
+const https=require('https')
 
 const Server_Port = process.env.PORT
 const Mongo_url = process.env.DB_URL
@@ -140,22 +142,25 @@ server.get('/logout', (req, res) => {
 server.use('/api', app)
 
 
+const httpsServer = https.createServer({
+    cert: fs.readFileSync('cert.pem'),
+    key: fs.readFileSync('key.pem')
+},server)
 
 
-
-
+    
 
 mongoose.connection.on('connected', () => {
     console.log("Database Connected")
 })
 
 
+
 async function connect() {
     await mongoose.connect(Mongo_url)
-    server.listen(Server_Port, () => {
+    httpsServer.listen(Server_Port, () => {
         console.log(`server started on port ${Server_Port}`)
     })
 }
-
 connect()
 
