@@ -77,12 +77,19 @@ server.get("/", (req, res) => {
     res.send('<p>Events Server</p>')
 });
 
-server.use((req, res) => {
+server.get('/user', (req, res) => {
+    console.log(req.user)
+    res.json(req.user)
+})
+
+server.use((req, res,next) => {
     if (req.user) {
         next()
+        return
     }
     res.json({message:'UnAuthorized'}).status(400)
 })
+
 
 server.post('/upload/to/google-calendar', (req, res) => {
     
@@ -118,10 +125,6 @@ server.post('/upload/to/google-calendar', (req, res) => {
     
 })
 
-server.get('/user', (req, res) => {
-    console.log(req.user)
-    res.json(req.user)
-})
 
 server.get('/logout', (req, res) => {
     req.logout()
