@@ -19,7 +19,7 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: `${process.env.Backend}/auth/google/redirect`,
+    callbackURL: `/auth/google/redirect`,
     proxy:true
 }
 
