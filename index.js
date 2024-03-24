@@ -143,7 +143,7 @@ server.get('/logout', (req, res) => {
 server.use('/api', app)
 
 
-const httpsServer = https.createServer(server)
+// const httpsServer = https.createServer(server)
 
 
 
@@ -156,7 +156,7 @@ mongoose.connection.on('connected', () => {
 
 async function connect() {
     await mongoose.connect(Mongo_url)
-    httpsServer.listen(Server_Port, () => {
+        server.listen(Server_Port, () => {
         console.log(`server started on port ${Server_Port}`)
     })
 }
