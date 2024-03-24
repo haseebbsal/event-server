@@ -5,8 +5,9 @@ const cors = require('cors')
 const { default: mongoose } = require('mongoose')
 require('dotenv').config()
 let passport = require('passport')
-let cookieSession=require('cookie-session')
+// let cookieSession=require('cookie-session')
 let google = require('passport-google-oauth20')
+let session = require('express-session')
 const path=require('path')
 
 const Server_Port = process.env.PORT
@@ -29,16 +30,34 @@ server.use(express.json())
 // server.use(express.static('public'))
 
 
-server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
-    name: 'Events_Session',
-    maxAge: 60000 * 60 * 24,
-    keys: ['haseebkey', 'sabihkey'],
-    secure: 'auto',
-    sameSite: "none",
-    proxy:true// will have to store these keys in .env later
+// server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
+//     name: 'Events_Session',
+//     maxAge: 60000 * 60 * 24,
+//     keys: ['haseebkey', 'sabihkey'],
+//     secure: 'auto',
+//     sameSite: "none",
+//     proxy:true// will have to store these keys in .env later
 
-}))
+// }))
 
+
+app.use(session(
+    {
+        name: 'google-session',
+        secret: 'yessss',
+        resave: false,
+        saveUninitialized: false,
+        store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
+        cookie: {
+            maxAge: 60000 * 60 * 24,
+            // sameSite: 'strict',
+            sameSite:'none',
+            secure: "auto"
+
+        }
+
+    }
+))
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
     done(null, { profile ,accesstoken})
 }))
