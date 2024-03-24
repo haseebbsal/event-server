@@ -119,7 +119,7 @@ server.get('/user', (req, res) => {
 })
 
 server.get('/logout', (req, res) => {
-    req.session=null
+    req.logout()
     res.json('logged out')
 })
 server.use('/api', app)
