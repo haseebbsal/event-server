@@ -23,7 +23,7 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: `https://event-server-five.vercel.app/auth/google`,
+    callbackURL: `http://event-server-five.vercel.app/auth/google`,
     // proxy:true
 }
 
