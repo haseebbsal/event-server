@@ -25,7 +25,7 @@ const google_options = {
 
 server.use(cors({
     origin: `${process.env.Front_End}`,
-    credentials:true
+    credentials: true
 }))
 server.use(express.json())
 // server.use(express.static('public'))
@@ -48,6 +48,7 @@ server.use(session(
         secret: 'yessss',
         resave: false,
         saveUninitialized: false,
+        proxy:true,
         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
         cookie: {
             maxAge: 60000 * 60 * 24,
