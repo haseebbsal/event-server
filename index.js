@@ -27,7 +27,7 @@ const google_options = {
     proxy:true
 }
 // https://event-server-five.vercel.app/auth/google
-// server.enable('trust proxy')
+server.enable('trust proxy')
 server.use(cors({
     origin: `https://events-frontend-liard.vercel.app`,
     credentials: true
@@ -81,8 +81,8 @@ server.use(passport.initialize()) // to set the cookies session data to go by de
 server.use(passport.session()) 
 
 server.get('/auth/google', passport.authenticate('google', {
-    failureRedirect: `${process.env.front_end}/login`,
-    successRedirect: `${process.env.front_end}`,
+    failureRedirect: `https://events-frontend-liard.vercel.app/login`,
+    successRedirect: `https://events-frontend-liard.vercel.app`,
     // session:false
 }))
 
