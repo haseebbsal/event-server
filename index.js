@@ -29,7 +29,7 @@ const google_options = {
 // https://event-server-five.vercel.app/auth/google
 // server.enable('trust proxy')
 server.use(cors({
-    origin: [`${process.env.front_end}`,`${process.env.backend}`],
+    origin: `${process.env.front_end}`,
     credentials: true
 }))
 server.use(helmet())
