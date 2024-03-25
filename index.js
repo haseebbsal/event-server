@@ -64,6 +64,25 @@ server.use(session(
 
     }
 ))
+server.use(session(
+    {
+        name: 'events_session',
+        secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
+        resave: false,
+        saveUninitialized: false,
+        proxy: true,
+        store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
+        cookie: {
+            maxAge: 60000 * 60 * 24,
+            // sameSite: 'strict',
+            domain: 'event-server-five.vercel.app',
+            sameSite: 'none',
+            secure: "auto"
+
+        }
+
+    }
+))
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
     done(null, { profile ,accesstoken})
 }))
