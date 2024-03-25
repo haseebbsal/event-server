@@ -51,11 +51,12 @@ server.use(session(
         secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
         resave: false,
         saveUninitialized: false,
-        proxy:true,
+        proxy: true,
         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
         cookie: {
             maxAge: 60000 * 60 * 24,
             // sameSite: 'strict',
+            domain:'.vercel.app',
             sameSite:'none',
             secure: "auto"
 
@@ -88,7 +89,8 @@ server.get('/auth/google', passport.authenticate('google', {
 
 
 
-server.get('/google-signin', passport.authenticate('google', { scope: ['email','https://www.googleapis.com/auth/calendar'] }))
+server.get('/google-signin', passport.authenticate('google', {
+    scope: ['email', 'https://www.googleapis.com/auth/calendar'], accessType: 'offline', approvalPrompt: 'force'}))
 
 server.get("/", (req, res) => {
     res.send('<p>Events Server</p>')
