@@ -35,24 +35,32 @@ server.use(cors({
 server.use(helmet())
 server.use(express.json())
 
-server.use(session(
-    {
-        name: 'events_session',
-        secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
-        resave: false,
-        saveUninitialized: false,
-        proxy:true,
-        store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
-        cookie: {
-            maxAge: 60000 * 60 * 24,
-            // sameSite: 'strict',
-            sameSite:'none',
-            secure: "auto"
+server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
+    name: 'cooki_events_session',
+    maxAge: 60000 * 60 * 24,
+    sameSite: 'none',
+    secure: "auto",
+    keys:['hawdwdwdsddwwdbdwdwddkdedywdwdwdwdwdwdww'] // will have to store these keys in .env later
 
-        }
+}))
+// server.use(session(
+//     {
+//         name: 'events_session',
+//         secret: 'ejfnejnfjkwenjfnwenfnwekfnweknfejwfnk',
+//         resave: false,
+//         saveUninitialized: false,
+//         proxy:true,
+//         store: mongostore.create({ mongoUrl: 'mongodb+srv://haseebb-sal:haskybeast123@haseebfirstcluster.1v5tosb.mongodb.net/events-jbscode?retryWrites=true&w=majority' }),
+//         cookie: {
+//             maxAge: 60000 * 60 * 24,
+//             // sameSite: 'strict',
+//             sameSite:'none',
+//             secure: "auto"
 
-    }
-))
+//         }
+
+//     }
+// ))
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
     done(null, { profile ,accesstoken})
 }))
