@@ -56,7 +56,7 @@ server.use(session(
         cookie: {
             maxAge: 60000 * 60 * 24,
             // sameSite: 'strict',
-            domain:'.vercel.app',
+            domain:'events-frontend-liard.vercel.app',
             sameSite:'none',
             secure: "auto"
 
