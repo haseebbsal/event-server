@@ -23,13 +23,13 @@ const client_secret = process.env.Client_Secret
 const google_options = {
     clientID: clientid,
     clientSecret: client_secret,
-    callbackURL: `https://event-server-five.vercel.app/auth/google`,
+    callbackURL: 'https://event-server-five.vercel.app/auth/google',
     proxy:true
 }
 // https://event-server-five.vercel.app/auth/google
 server.enable('trust proxy')
 server.use(cors({
-    origin: `https://events-frontend-liard.vercel.app`,
+    origin: 'https://events-frontend-liard.vercel.app',
     credentials: true
 }))
 server.use(helmet())
