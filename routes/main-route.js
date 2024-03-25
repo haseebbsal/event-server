@@ -45,11 +45,12 @@ app.post('/events', async (req, res) => {
 })
 
 app.post('/countryandcity/upload', async (req, res) => {
-    let { city, country, _id ,id} = req.body
+    let { city, country, _id, id } = req.body
+    console.log(city,country,_id,id)
     // console.log(city,country,_id)
     let data;
     if (!_id) {
-        data=await country_city_Model.updateOne({ id:id }, { country: country,city:city,id:id }, { upsert: true })
+        data=await country_city_Model.updateOne({ id:id }, { country: country,city:city }, { upsert: true })
         
     }
     data = await country_city_Model.updateOne({ id:id }, { country: country,city:city })

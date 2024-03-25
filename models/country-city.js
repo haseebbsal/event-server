@@ -4,12 +4,10 @@ const event_schema = new mongo.Schema({
     country: {
         type: Object,
         required: true,
-        unique: true
     },
     city: {
         type: String,
         required: true,
-        unique: true
     },
     id: {
         type: String,
