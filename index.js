@@ -26,7 +26,7 @@ const google_options = {
     callbackURL: `https://event-server-five.vercel.app/auth/google`,
     proxy:true
 }
-
+// https://event-server-five.vercel.app/auth/google
 server.enable('trust proxy')
 server.use(cors({
     origin: [`${process.env.Front_End}`,`${process.env.Backend}`],
@@ -36,10 +36,11 @@ server.use(helmet())
 server.use(express.json())
 
 server.use(cookieSession({ // used for identifying our cookies and setting up our cookies in which we will use to store our cookies session data
-    name: 'cooki_events_session',
+    name: 'cookie_events_session',
     maxAge: 60000 * 60 * 24,
     sameSite: 'none',
-    secure: "auto",
+    // secure: "auto",
+    secure:true,
     keys:['hawdwdwdsddwwdbdwdwddkdedywdwdwdwdwdwdww'] // will have to store these keys in .env later
 
 }))
@@ -93,7 +94,7 @@ server.get("/", (req, res) => {
 });
 
 server.get('/user', (req, res) => {
-    console.log('im here')
+    // console.log('im here')
     console.log(req.user)
     res.json(req.user)
 })
