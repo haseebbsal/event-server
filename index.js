@@ -9,11 +9,8 @@ let passport = require('passport')
 let google = require('passport-google-oauth20')
 let session = require('express-session')
 let mongostore = require('connect-mongo')
-const path = require('path')
 const helmet = require('helmet')
-const fs = require('fs')
-const https = require('https')
-const http=require('http')
+
 
 const Server_Port = process.env.PORT
 const Mongo_url = process.env.DB_URL
@@ -63,7 +60,6 @@ server.use(session(
 
     }
 ))
-
 passport.use(new google.Strategy(google_options, (accesstoken, refreshtoken, profile, done) => {
     done(null, { profile ,accesstoken})
 }))

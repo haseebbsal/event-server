@@ -6,7 +6,7 @@ const event_schema = new mongo.Schema({
         required: true,
     },
     city: {
-        type: String,
+        type: Object,
         required: true,
     },
     id: {
