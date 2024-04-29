@@ -1,17 +1,17 @@
 const mongo = require('mongoose')
 
-const event_schema = new mongo.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
+const eventsSchema = new mongo.Schema({
     id: {
         type: String,
         required: true
-
+    },
+    name: {
+        type: String,
+        required: true
     }
+
 })
 
-const events_model=mongo.model('events',event_schema)
+const eventsmodel = mongo.model('events', eventsSchema)
 
-module.exports=events_model
+module.exports=eventsmodel
