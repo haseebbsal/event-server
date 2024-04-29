@@ -256,11 +256,11 @@ server.post('/scrap/events', async (req, res) => {
 
     try {
         await Promise.all([fetchingEventsPromise])
-        return res.json({ msg: 'Events Exists', data: data_to_upload })
+        res.json({ msg: 'Events Exists', data: data_to_upload })
     }
     catch (e) {
         console.log(e)
-        return res.json({ msg: 'No Events Exists' })
+        res.json({ msg: 'No Events Exists' })
     }
 })
 
