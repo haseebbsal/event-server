@@ -29,7 +29,11 @@ const Mongo_url = process.env.DB_URL
 // }
 // https://event-server-five.vercel.app/auth/google
 // server.enable('trust proxy')
-server.use(cors())
+server.use(cors({
+
+    origin:'*'
+}
+))
 // const moesif = require('moesif-nodejs');
 
 // 2. Set the options, the only required field is applicationId
