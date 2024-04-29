@@ -297,13 +297,13 @@ server.post('/upload/calendar', async (req, res) => {
     try {
         const uploadingToCalendar = await Promise.all(promise_container)
         console.log('done uploading to calendar')
-        return res.json({ msg: 'Done Uploading', accessToken })
+        res.json({ msg: 'Done Uploading', accessToken })
 
     }
     catch (e) {
         console.log(e)
         console.log('failed to upload')
-        return res.json({ msg: 'failed to upload', accessToken })
+        res.json({ msg: 'failed to upload', accessToken })
     }
     
 })
